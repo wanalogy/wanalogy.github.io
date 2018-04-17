@@ -172,7 +172,7 @@
         <p>[TOC]</p>
 <p>Simone在今年2月份的<a href="https://www.evilsocket.net/2018/02/27/All-hail-bettercap-2-0-one-tool-to-rule-them-all/" target="_blank" rel="noopener">博文</a>上宣布将betercap更新到了2.0版本，将bettercap用go语言重写了一遍，不过模块改用了javascript实现，并进行了功能升级和扩展。(PS:之前为了写bettercap的模块，学习了ruby的基础，这回又改学习go和javascript的了 (-__-)b。)</p>
 <p>下面是我的一些学习笔记，错误之处，还望大家不吝赐教。</p>
-<h1 id="bettercap2-0的主要改进"><a href="#bettercap2-0的主要改进" class="headerlink" title="bettercap2.0的主要改进"></a>bettercap2.0的主要改进</h1><h2 id="1-从ruby迁移到go"><a href="#1-从ruby迁移到go" class="headerlink" title="1. 从ruby迁移到go"></a>1. 从ruby迁移到go</h2><p>由于go优越的并发性能，可以解决ruby导致的<a href="https://en.wikipedia.org/wiki/Global_interpreter_lock" target="_blank" rel="noopener">GIL</a>问题（ps：没有仔细研究GIL，应该指的是启动应用程序后，就没有办法再进行配置，每次更改都必须重新启动）。</p>
+<h1 id="bettercap2-0的主要改进"><a href="#bettercap2-0的主要改进" class="headerlink" title="bettercap2.0的主要改进"></a>bettercap2.0的主要改进</h1><h2 id="1-从ruby迁移到go"><a href="#1-从ruby迁移到go" class="headerlink" title="1. 从ruby迁移到go"></a>1. 从ruby迁移到go</h2><p>由于go优越的并发性能，可以解决ruby导致的<a href="https://en.wikipedia.org/wiki/Global_interpreter_lock" target="_blank" rel="noopener">GIL</a>问题（ps：<del>没有仔细研究GIL，应该指的是启动应用程序后，就没有办法再进行配置，每次更改都必须重新启动</del> update:貌似是全局锁的意思，导致无法实现高并发）。</p>
 <p>同时，go语言实现也可以使得bettercap可以运行在低配置的硬件设备上，并且仍然可以实现每秒代理数以百计的连接，并转发数以千计的数据包，之前的ruby版本只能处理每秒5-6个连接，原因是解释器在locking的时候，会对I/O做出限制。简而言之，在实现MITM攻击的时候，不再产生不想要的网络DoS攻击。（ps:之前一直受困于这个问题，现在才知道是这个问题）</p>
 <p>内存和cpu的使用率也得到了大幅度优化，你可以在树莓派等各种设备上同时启动多个bettercap实例，但cpu的占有率不会超过20%，除非你要攻击一个巨大的子网。你也可以实时监控局域网的活动，同时扫描wifi接入点，攻击附近的蓝牙设备。</p>
 <h2 id="2-安装方便，可移植性好"><a href="#2-安装方便，可移植性好" class="headerlink" title="2.安装方便，可移植性好"></a>2.安装方便，可移植性好</h2><p>安装不需要任何依赖（在一些平台上需要使用lipcap.so，实际测试，kali rolling版本上需要链接过去），升级的时候，只需要运行下面的命令：</p>
@@ -282,7 +282,12 @@
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
+				</div>
+				<div>
+					<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+					本站总访问量 <span id="busuanzi_value_site_pv"></span> 次&nbsp&nbsp&nbsp
+					本站访客数<span id="busuanzi_value_site_uv"></span>人次
+					</div>
     </div>
   </div>
 </footer>
